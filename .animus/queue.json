@@ -17,6 +17,25 @@
     }
   },
   "completions": {
+    "46be805a-ce36-4801-ad78-814e0347bf47": {
+      "execution": {
+        "schema": "animus.execution-fence.v1",
+        "version": 1,
+        "workflow_id": "a2658c27-47fd-4e32-9d9c-6b7fdbf81049",
+        "workflow_generation": 1,
+        "subject": {
+          "qualified_id": "task:TASK-004",
+          "generation": 2
+        },
+        "queue_lease": {
+          "entry_id": "46be805a-ce36-4801-ad78-814e0347bf47",
+          "owner_id": "animus-daemon-1675-43ae38efba7f4730b94155d4e20f1bcc",
+          "generation": 1,
+          "expires_at": "2026-09-23T22:14:12.049112Z"
+        }
+      },
+      "status": "completed"
+    },
     "b263bd27-7103-4718-b2f2-01453157e1e0": {
       "execution": {
         "schema": "animus.execution-fence.v1",
