@@ -103,7 +103,11 @@ jobs:
           export HOME="$RUNNER_TEMP/animus-home"
           export PATH="$GITHUB_WORKSPACE/cli/target/release:$PATH"
           mkdir -p "$HOME"
-          animus plugin install-defaults --yes --include-subjects --include-transports
+          # Install the released required support set, then replace every
+          # participating component with the exact revision built above.
+          # Recommended transports include an obsolete web-ui release with no
+          # Linux asset, so they are deliberately supplied from source below.
+          animus plugin install-defaults --yes
           plugin_dir="$HOME/.animus/plugins"
           install -m 755 queue/target/release/animus-queue-default "$plugin_dir/animus-queue-default"
           install -m 755 runner/target/release/animus-workflow-runner-default "$plugin_dir/animus-workflow-runner-default"
