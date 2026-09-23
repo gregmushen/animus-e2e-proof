@@ -78,6 +78,12 @@ jobs:
           cache: npm
           cache-dependency-path: web-ui/package-lock.json
 
+      - name: Install native build dependencies
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libdbus-1-dev pkg-config
+
       - name: Build intended component set
         shell: bash
         run: |
