@@ -70,7 +70,6 @@ agents:
     mcp_servers: ["animus"]
     skills:
       - implementation
-      - code-analysis
       - debugging
     tool_policy:
       allow:

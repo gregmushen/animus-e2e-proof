@@ -85,6 +85,12 @@ phases:
       success_exit_codes: [0]
 
 workflows:
+  - id: proof-workflow
+    name: Synchronous Agent Proof Workflow
+    description: Minimal one-phase workflow used to prove agent execution.
+    phases:
+      - implementation
+
   - id: standard-workflow
     name: Task Queue Delivery Workflow
     description: |
