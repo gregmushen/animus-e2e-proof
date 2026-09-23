@@ -1,0 +1,186 @@
+name: Animus compatibility
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - compatibility/**
+      - .github/workflows/compatibility.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  end-to-end:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out compatibility fixture
+        uses: actions/checkout@v4
+        with:
+          path: proof
+
+      - name: Read compatible revisions
+        id: release
+        working-directory: proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          manifest=compatibility/release-set.json
+          for component in cli queue runner graphql web_ui; do
+            echo "${component}_repo=$(jq -r ".components.${component}.repository" "$manifest")" >> "$GITHUB_OUTPUT"
+            echo "${component}_rev=$(jq -r ".components.${component}.revision" "$manifest")" >> "$GITHUB_OUTPUT"
+          done
+
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.release.outputs.cli_repo }}
+          ref: ${{ steps.release.outputs.cli_rev }}
+          path: cli
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.release.outputs.queue_repo }}
+          ref: ${{ steps.release.outputs.queue_rev }}
+          path: queue
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.release.outputs.runner_repo }}
+          ref: ${{ steps.release.outputs.runner_rev }}
+          path: runner
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.release.outputs.graphql_repo }}
+          ref: ${{ steps.release.outputs.graphql_rev }}
+          path: graphql
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.release.outputs.web_ui_repo }}
+          ref: ${{ steps.release.outputs.web_ui_rev }}
+          path: web-ui
+
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            cli
+            queue
+            runner
+            graphql
+            web-ui/wrapper
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web-ui/package-lock.json
+
+      - name: Build intended component set
+        shell: bash
+        run: |
+          set -euo pipefail
+          cargo build --release --manifest-path cli/Cargo.toml -p orchestrator-cli
+          cargo build --release --manifest-path queue/Cargo.toml
+          cargo build --release --manifest-path runner/Cargo.toml
+          cargo build --release --manifest-path graphql/Cargo.toml
+          npm ci --prefix web-ui
+          npm run build --prefix web-ui
+          cargo build --release --manifest-path web-ui/wrapper/Cargo.toml
+
+      - name: Install released supporting plugins and exact tested binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          export HOME="$RUNNER_TEMP/animus-home"
+          export PATH="$GITHUB_WORKSPACE/cli/target/release:$PATH"
+          mkdir -p "$HOME"
+          animus plugin install-defaults --yes --include-subjects --include-transports
+          plugin_dir="$HOME/.animus/plugins"
+          install -m 755 queue/target/release/animus-queue-default "$plugin_dir/animus-queue-default"
+          install -m 755 runner/target/release/animus-workflow-runner-default "$plugin_dir/animus-workflow-runner-default"
+          install -m 755 graphql/target/release/animus-transport-graphql "$plugin_dir/animus-transport-graphql"
+          install -m 755 web-ui/target/release/animus-web-ui "$plugin_dir/animus-web-ui"
+
+      - name: Start stack and complete queued task
+        id: smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          export HOME="$RUNNER_TEMP/animus-home"
+          export PATH="$GITHUB_WORKSPACE/cli/target/release:$PATH"
+          project="$RUNNER_TEMP/animus-project"
+          mkdir -p "$project"
+          cp -R proof/compatibility/fixture/. "$project/"
+          git -C "$project" init -b main
+          git -C "$project" config user.name 'Animus CI'
+          git -C "$project" config user.email 'animus-ci@example.invalid'
+          git -C "$project" add .
+          git -C "$project" commit -m 'test: initialize compatibility fixture'
+
+          animus --project-root "$project" workflow config validate --json | tee "$RUNNER_TEMP/config-validate.json"
+          animus --project-root "$project" workflow config compile --json | tee "$RUNNER_TEMP/config-compile.json"
+          animus --project-root "$project" daemon start --json | tee "$RUNNER_TEMP/daemon-start.json"
+          animus --project-root "$project" daemon status --json | tee "$RUNNER_TEMP/daemon-status.json"
+
+          task_json=$(animus --project-root "$project" subject create --kind task --title 'CI compatibility proof' --status ready --body 'Complete the ci-proof workflow.' --json)
+          task_id=$(jq -r '.data.result.id' <<<"$task_json")
+          enqueue_json=$(animus --project-root "$project" queue enqueue --subject-id "$task_id" --workflow-ref ci-proof --idempotency-key compatibility-ci --json)
+          entry_id=$(jq -r '.data.entry_id' <<<"$enqueue_json")
+
+          workflow_id=''
+          for _ in $(seq 1 90); do
+            runs=$(animus --project-root "$project" workflow list --json)
+            workflow_id=$(jq -r '.data.runs[]? | select(.definition == "ci-proof") | .id' <<<"$runs" | head -1)
+            status=$(jq -r --arg id "$workflow_id" '.data.runs[]? | select(.id == $id) | .status' <<<"$runs" | head -1)
+            if [[ "$status" == completed ]]; then break; fi
+            if [[ "$status" == failed || "$status" == cancelled ]]; then
+              echo "workflow terminal failure: $status" >&2
+              exit 1
+            fi
+            sleep 2
+          done
+          test -n "$workflow_id"
+          test "$(cat "$project/ci-compatibility-proof.txt")" = 'Animus CI compatibility proof'
+          final=$(animus --project-root "$project" workflow get --id "$workflow_id" --json)
+          test "$(jq -r '.data.status' <<<"$final")" = completed
+
+          animus --project-root "$project" web serve --json >"$RUNNER_TEMP/web-serve.json" 2>"$RUNNER_TEMP/web-serve.log" &
+          web_pid=$!
+          trap 'kill "$web_pid" 2>/dev/null || true; animus --project-root "$project" daemon stop --json || true' EXIT
+          for _ in $(seq 1 60); do
+            curl -fsS http://127.0.0.1:8082/healthz >/dev/null && break
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8082/healthz
+          ANIMUS_GRAPHQL_URL=http://127.0.0.1:8082/graphql \
+            ANIMUS_TEST_SUBJECT_ID="$task_id" \
+            ANIMUS_TEST_WORKFLOW_ID="$workflow_id" \
+            npm --prefix web-ui run test:graphql-compat
+
+          for route in dashboard tasks requirements workflows queue agents events history daemon; do
+            body=$(curl -fsS "http://127.0.0.1:8082/$route")
+            grep -q '<div id="root"></div>' <<<"$body"
+            echo "PASS route $route"
+          done
+
+          echo "task_id=$task_id" >> "$GITHUB_OUTPUT"
+          echo "entry_id=$entry_id" >> "$GITHUB_OUTPUT"
+          echo "workflow_id=$workflow_id" >> "$GITHUB_OUTPUT"
+
+      - name: Publish proof summary
+        shell: bash
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<EOF_SUMMARY
+          ## Animus compatibility proof
+
+          - Task: `${{ steps.smoke.outputs.task_id }}`
+          - Queue entry: `${{ steps.smoke.outputs.entry_id }}`
+          - Workflow: `${{ steps.smoke.outputs.workflow_id }}`
+          - Daemon preflight: passed without bypass flags
+          - Packaged GraphQL proxy: passed
+          - Checked-in UI queries: passed
+          - Primary routes: passed
+          EOF_SUMMARY

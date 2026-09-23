@@ -1,0 +1,23 @@
+tools_allowlist:
+  - sh
+
+phases:
+  prove:
+    mode: command
+    directive: Write the compatibility proof artifact.
+    command:
+      program: sh
+      args:
+        - -lc
+        - printf 'Animus CI compatibility proof' > ci-compatibility-proof.txt
+      cwd_mode: project_root
+      timeout_secs: 30
+      success_exit_codes: [0]
+
+workflows:
+  - id: ci-proof
+    name: CI compatibility proof
+    phases:
+      - prove
+
+default_workflow_ref: ci-proof
