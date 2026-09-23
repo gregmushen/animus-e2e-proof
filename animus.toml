@@ -1,0 +1,18 @@
+[project]
+kernel = "=0.6.33"
+
+[plugins]
+animus-config-yaml = { git = "launchapp-dev/animus-config-yaml", tag = "v0.1.0" }
+animus-notifier-http = { git = "launchapp-dev/animus-notifier-http", tag = "v0.1.0" }
+animus-provider-claude = { git = "launchapp-dev/animus-provider-claude", tag = "v0.2.7" }
+animus-provider-codex-mcp = { git = "launchapp-dev/animus-provider-codex-mcp", tag = "v0.1.0" }
+animus-queue-default = { git = "launchapp-dev/animus-queue-default", tag = "v0.3.3" }
+animus-subject-default = { git = "launchapp-dev/animus-subject-default", tag = "v0.1.5" }
+animus-subject-requirements = { git = "launchapp-dev/animus-subject-requirements", tag = "v0.1.7" }
+animus-workflow-runner-default = { git = "launchapp-dev/animus-workflow-runner-default", tag = "v0.4.5" }
+
+[packs]
+"animus.core-skills" = { git = "launchapp-dev/animus-pack-core-skills", tag = "v0.1.0" }
+"animus.requirement" = { git = "launchapp-dev/animus-pack-requirement", tag = "v0.1.0" }
+"animus.review" = { git = "launchapp-dev/animus-pack-review", tag = "v0.1.0" }
+"animus.task" = { git = "launchapp-dev/animus-pack-task", tag = "v0.1.1" }

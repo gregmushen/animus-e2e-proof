@@ -1,0 +1,62 @@
+# Top-level project config consumed by the Animus daemon.
+#
+# Pattern: task-queue
+#
+# Use this template when you already have tasks (or will create them with
+# `animus task create`) and want a clean delivery loop. The standard-workflow
+# defined in delivery.yaml runs implementation -> review -> push -> create-pr
+# for each ready task.
+#
+# Keys you can tune here:
+#   - default_workflow_ref : which workflow runs when you `animus workflow run --task-id <id>`
+#                            without an explicit --workflow flag.
+#   - tools_allowlist      : shell programs the daemon is allowed to invoke from agents.
+
+default_workflow_ref: standard-workflow
+
+tools_allowlist:
+  - cargo
+  - npm
+  - pnpm
+  - git
+  - gh
+  - animus
+
+# Compatibility declarations for phases referenced by the currently released
+# animus.task pack. The pack's 0.1.1 workflows reference these IDs without
+# declaring them in its own phase catalog.
+phase_catalog:
+  requirements:
+    label: Requirements
+    description: Refine the task into implementation-ready requirements.
+    category: planning
+  ux-research:
+    label: UX Research
+    description: Research the user experience before implementation.
+    category: planning
+  wireframe:
+    label: Wireframe
+    description: Produce and evaluate the interaction structure.
+    category: planning
+  mockup-review:
+    label: Mockup Review
+    description: Review the proposed interface before implementation.
+    category: review
+
+phases:
+  requirements:
+    mode: agent
+    agent_id: default
+    directive: Refine the active task into concrete implementation requirements and acceptance criteria.
+  ux-research:
+    mode: agent
+    agent_id: default
+    directive: Research the user experience constraints and record evidence-backed recommendations.
+  wireframe:
+    mode: agent
+    agent_id: default
+    directive: Produce the interaction structure required by the active task.
+  mockup-review:
+    mode: agent
+    agent_id: reviewer
+    directive: Review the proposed interface against the task requirements and report a verdict.

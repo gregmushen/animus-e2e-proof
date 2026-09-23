@@ -1,0 +1,8 @@
+# Animus — ignore derived/secret/scratch (animus.toml, animus.lock, .env.example, workflows stay committed)
+.env
+.animus/plugins/
+.animus/plugins.yaml
+.animus/*.lock
+.animus/runs/
+.animus/artifacts/
+!.animus/plugins.lock
