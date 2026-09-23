@@ -26,6 +26,10 @@ phases:
   implementation:
     mode: agent
     agent_id: default
+    capabilities:
+      mutates_state: true
+      writes_files: true
+      requires_commit: true
     directive: |
       Implement the task end-to-end on the current working branch.
 
