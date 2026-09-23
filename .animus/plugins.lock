@@ -1,0 +1,132 @@
+schema_version = "2.0"
+generated_at = "2026-09-23T21:35:07.430987+00:00"
+
+[[plugins]]
+name = "animus-config-yaml"
+version = "v0.1.0"
+installed_at = "2026-09-23T15:37:06.805376+00:00"
+source_repo = "launchapp-dev/animus-config-yaml"
+
+[plugins.targets.aarch64-apple-darwin]
+archive_sha256 = "9a9462e461b4250d3e5641d1626beb1eac08832fa2d2aedbf028972985663dff"
+signature_bundle_sha256 = "7b34a8a1b670c4f02f675c7efae15bc2e0c5dff402d7983a869163ad57d5892a"
+installed_binary_sha256 = "d371d7a141575bb67b00a053825f49b4383481ad04b01238dfd284ceff09e48a"
+
+[[plugins]]
+name = "animus-provider-claude"
+version = "v0.2.7"
+installed_at = "2026-09-23T15:37:12.225899+00:00"
+source_repo = "launchapp-dev/animus-provider-claude"
+
+[plugins.targets.aarch64-apple-darwin]
+archive_sha256 = "28ae1b580146698cc2cf31afa9d009f19db407f00265061c3b12c0a9c49f3457"
+signature_bundle_sha256 = "176dcd79a433832bafb433152909cc305a0b6c7ae6311645b8e33160183978a3"
+installed_binary_sha256 = "6492bd10bec8963ee799b3e34dad276b761295799acfecc73927a23ce6580535"
+
+[[plugins]]
+name = "animus-provider-codex"
+version = "v0.2.9"
+installed_at = "2026-09-23T15:35:33.644937+00:00"
+source_repo = "launchapp-dev/animus-provider-codex"
+
+[plugins.targets.aarch64-apple-darwin]
+archive_sha256 = ""
+installed_binary_sha256 = "b8c5d352a48cd90dc09891b1bcfeeb4e1173b3b59a5db720145315a15d31b8b5"
+
+[[plugins]]
+name = "animus-queue-default"
+version = ""
+installed_at = "2026-09-23T21:31:38.320286+00:00"
+source_repo = "path:/Users/gregmushen/work/code/animus-queue-default/target/release/animus-queue-default"
+
+[plugins.targets.aarch64-apple-darwin]
+archive_sha256 = "f67a334d0de0522ac897b7098a26fd1454bfba521b54e84239d9ad9f281580dc"
+installed_binary_sha256 = "f67a334d0de0522ac897b7098a26fd1454bfba521b54e84239d9ad9f281580dc"
+
+[[plugins]]
+name = "animus-subject-default"
+version = "v0.1.5"
+installed_at = "2026-09-23T15:37:23.960522+00:00"
+installed_kind = "task"
+native_kind = "task"
+source_repo = "launchapp-dev/animus-subject-default"
+
+[plugins.targets.aarch64-apple-darwin]
+archive_sha256 = "a09b67f54ef73f80eae229428d465655c11f6fa10fc21b3213e041f34e4f30b8"
+signature_bundle_sha256 = "02d7ae98578e7102e29b4ee4732a2fce3dd5975a6c21f69218b44d7293a5ec0a"
+installed_binary_sha256 = "2ccb3c058a3a281219333c9a2914e8796f39f7e20cd496d1313221e169a22044"
+
+[[plugins]]
+name = "animus-subject-requirements"
+version = "v0.1.7"
+installed_at = "2026-09-23T15:37:25.614917+00:00"
+installed_kind = "requirement"
+native_kind = "requirement"
+source_repo = "launchapp-dev/animus-subject-requirements"
+
+[plugins.targets.aarch64-apple-darwin]
+archive_sha256 = "7fc416b04ff06432d118048c18b2bdcd500c321110def6ae670f4b1dda7db948"
+signature_bundle_sha256 = "89ae7f0033511bcb48b9d978545e81d3efd897c3b1349364e6555bfb04ef8af5"
+installed_binary_sha256 = "b7375438d7c23c2666bae673c56250610b686838303ff832932418f94a34f1f5"
+
+[[plugins]]
+name = "animus-transport-graphql"
+version = "v0.2.3"
+installed_at = "2026-09-23T15:48:05.839764+00:00"
+source_repo = "launchapp-dev/animus-transport-graphql"
+
+[plugins.targets.aarch64-apple-darwin]
+archive_sha256 = "f0aaad31bc1773f67d0e92abcc12ddbc629dba1cd94dcbf257aad5bd2e34f2fe"
+signature_bundle_sha256 = "6027ad1d3cd751c315695e12a2bfaaf532e44e02feb8301eae76542c2f950c16"
+installed_binary_sha256 = "12945f0be21cd8bca91b5a3be54289c911879945f15a708686bc6543a12a6361"
+
+[[plugins]]
+name = "animus-transport-http"
+version = "v0.2.1"
+installed_at = "2026-09-23T15:35:06.195398+00:00"
+source_repo = "launchapp-dev/animus-transport-http"
+
+[plugins.targets.aarch64-apple-darwin]
+archive_sha256 = ""
+installed_binary_sha256 = "fb817e1383e30dac8d6c9ae2fc480db48ae8626534b58bf9d648f1501f6a8aef"
+
+[[plugins]]
+name = "animus-workflow-runner-default"
+version = ""
+installed_at = "2026-09-23T21:35:07.429435+00:00"
+source_repo = "path:/Users/gregmushen/work/code/animus-workflow-runner-default/target/release/animus-workflow-runner-default"
+
+[plugins.targets.aarch64-apple-darwin]
+archive_sha256 = "aa66517d1f4a81f6bcb79eea1404b8d0a3d44d86514e4769503637333fc02a26"
+installed_binary_sha256 = "aa66517d1f4a81f6bcb79eea1404b8d0a3d44d86514e4769503637333fc02a26"
+
+[[plugins]]
+name = "animus-notifier-http"
+version = "v0.1.0"
+installed_at = "2026-09-23T15:37:09.338621+00:00"
+source_repo = "launchapp-dev/animus-notifier-http"
+
+[plugins.targets.aarch64-apple-darwin]
+archive_sha256 = "270542bbfd67395d824283cecea21ece1701ff8a41580181bb6bc09d0ba972d4"
+installed_binary_sha256 = "83db704729b3309d5d0461a94048bfd765f520110596b586f49da2a5a2283e66"
+
+[[plugins]]
+name = "animus-provider-codex-mcp"
+version = "v0.1.0"
+installed_at = "2026-09-23T15:37:14.946207+00:00"
+source_repo = "launchapp-dev/animus-provider-codex-mcp"
+
+[plugins.targets.aarch64-apple-darwin]
+archive_sha256 = "47ce2802d71b950786b3391adb3f21bc31571c03ec0427ca1efb01273a2f7a5a"
+signature_bundle_sha256 = "ced1c508a2b5cb2ffd30b21092df11e48ffa3c7bb8785c376feedfb06584eb19"
+installed_binary_sha256 = "5e9a59886c50b6c748cdd9698b5194b8eb05a324fb49085e76e76c5d7a8a38f5"
+
+[[plugins]]
+name = "animus-web-ui"
+version = ""
+installed_at = "2026-09-23T15:42:17.659750+00:00"
+source_repo = "path:/Users/gregmushen/work/code/animus-web-ui/target/release/animus-web-ui"
+
+[plugins.targets.aarch64-apple-darwin]
+archive_sha256 = "2248e6c83068e93be3a3b99e6723bf7e6796d7107efe0635719b549eec27c0f4"
+installed_binary_sha256 = "2248e6c83068e93be3a3b99e6723bf7e6796d7107efe0635719b549eec27c0f4"
