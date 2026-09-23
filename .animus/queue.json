@@ -1,8 +1,36 @@
 {
-  "entries": [],
+  "entries": [
+    {
+      "entry_id": "46be805a-ce36-4801-ad78-814e0347bf47",
+      "subject_id": "task:TASK-004",
+      "task_id": "task:TASK-004",
+      "dispatch": {
+        "subject": {
+          "Task": {
+            "id": "task:TASK-004"
+          }
+        },
+        "workflow_ref": "standard-workflow",
+        "trigger_source": "manual-queue-enqueue",
+        "requested_at": "2026-09-23T22:04:26.671468Z"
+      },
+      "status": "assigned",
+      "workflow_id": "a2658c27-47fd-4e32-9d9c-6b7fdbf81049",
+      "enqueued_at": "2026-09-23T22:04:27.167190+00:00",
+      "assigned_at": "2026-09-23T22:04:34.093676+00:00",
+      "held_at": null,
+      "idempotency_key": "claim-08-task-004-retry",
+      "subject_generation": 2,
+      "workflow_generation": 1,
+      "lease_owner_id": "animus-daemon-1675-43ae38efba7f4730b94155d4e20f1bcc",
+      "lease_generation": 1,
+      "lease_expires_at": "2026-09-23T22:11:41.881656+00:00"
+    }
+  ],
   "subject_generations": {
     "animus.task:task:TASK-003": 1,
-    "task:TASK-003": 1
+    "task:TASK-003": 1,
+    "task:TASK-004": 2
   },
   "idempotency": {
     "claim-05-task-003": {
@@ -14,6 +42,16 @@
       "entry_id": "b263bd27-7103-4718-b2f2-01453157e1e0",
       "qualified_subject_id": "task:TASK-003",
       "subject_generation": 1
+    },
+    "claim-08-task-004": {
+      "entry_id": "dc0e8d52-ec29-4661-b081-c15d17c7bb52",
+      "qualified_subject_id": "task:TASK-004",
+      "subject_generation": 1
+    },
+    "claim-08-task-004-retry": {
+      "entry_id": "46be805a-ce36-4801-ad78-814e0347bf47",
+      "qualified_subject_id": "task:TASK-004",
+      "subject_generation": 2
     }
   },
   "completions": {
@@ -35,6 +73,25 @@
         }
       },
       "status": "completed"
+    },
+    "dc0e8d52-ec29-4661-b081-c15d17c7bb52": {
+      "execution": {
+        "schema": "animus.execution-fence.v1",
+        "version": 1,
+        "workflow_id": "1c93bc1a-5482-45a7-88bb-0c9279253e52",
+        "workflow_generation": 1,
+        "subject": {
+          "qualified_id": "task:TASK-004",
+          "generation": 1
+        },
+        "queue_lease": {
+          "entry_id": "dc0e8d52-ec29-4661-b081-c15d17c7bb52",
+          "owner_id": "animus-daemon-1675-43ae38efba7f4730b94155d4e20f1bcc",
+          "generation": 1,
+          "expires_at": "2026-09-23T22:06:11.617417Z"
+        }
+      },
+      "status": "failed"
     },
     "e2661f7f-c2f0-4409-84b0-12603e807dcd": {
       "execution": {
