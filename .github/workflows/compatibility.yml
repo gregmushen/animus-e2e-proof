@@ -131,6 +131,7 @@ jobs:
           git -C "$project" commit -m 'test: initialize compatibility fixture'
 
           animus --project-root "$project" workflow config validate --json | tee "$RUNNER_TEMP/config-validate.json"
+          test "$(jq -r '.data.valid' "$RUNNER_TEMP/config-validate.json")" = true
           animus --project-root "$project" workflow config compile --json | tee "$RUNNER_TEMP/config-compile.json"
           animus --project-root "$project" daemon start --json | tee "$RUNNER_TEMP/daemon-start.json"
           animus --project-root "$project" daemon status --json | tee "$RUNNER_TEMP/daemon-status.json"

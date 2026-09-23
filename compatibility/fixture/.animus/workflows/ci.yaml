@@ -1,7 +1,67 @@
 tools_allowlist:
   - sh
 
+agents:
+  ci:
+    description: Compatibility test agent profile.
+    role: implementer
+    system_prompt: Execute the compatibility proof workflow exactly as configured.
+    model: claude-sonnet-4-6
+    tool: claude
+    capabilities:
+      implementation: true
+  swe:
+    description: Compatibility profile required by the installed review pack.
+    role: reviewer
+    system_prompt: Review compatibility-test output against the configured contract.
+    model: claude-sonnet-4-6
+    tool: claude
+    capabilities:
+      code_review: true
+
+phase_catalog:
+  requirements:
+    label: Requirements
+    description: Refine task requirements.
+    category: planning
+  implementation:
+    label: Implementation
+    description: Implement the task.
+    category: implementation
+  ux-research:
+    label: UX research
+    description: Research the task's user experience.
+    category: planning
+  wireframe:
+    label: Wireframe
+    description: Define the task's interaction structure.
+    category: planning
+  mockup-review:
+    label: Mockup review
+    description: Review the proposed user interface.
+    category: review
+
 phases:
+  requirements:
+    mode: agent
+    agent_id: ci
+    directive: Refine the task requirements.
+  implementation:
+    mode: agent
+    agent_id: ci
+    directive: Implement the task.
+  ux-research:
+    mode: agent
+    agent_id: ci
+    directive: Research the task's user experience.
+  wireframe:
+    mode: agent
+    agent_id: ci
+    directive: Define the task's interaction structure.
+  mockup-review:
+    mode: agent
+    agent_id: swe
+    directive: Review the proposed interface.
   prove:
     mode: command
     directive: Write the compatibility proof artifact.
