@@ -17,8 +17,8 @@ phases:
     mode: command
     directive: Create an isolated delivery branch for this workflow run.
     command:
-      program: git
-      args: ["switch", "-c", "animus/{workflow_id}"]
+      program: sh
+      args: ["-lc", "git switch -c animus/$ANIMUS_WORKFLOW_ID"]
       cwd_mode: project_root
       timeout_secs: 10
       success_exit_codes: [0]
@@ -27,8 +27,12 @@ phases:
     mode: command
     directive: Mark the dispatch subject as in-progress before any work starts.
     command:
-      program: animus
-      args: ["subject", "status", "--kind", "task", "--id", "{subject_id}", "--status", "in-progress"]
+      program: sh
+      args:
+        - -lc
+        - |
+          subject_native_id=$(printf %s "$ANIMUS_SUBJECT_ID" | cut -d: -f2-)
+          animus subject status --kind task --id "$subject_native_id" --status in-progress
       cwd_mode: project_root
       timeout_secs: 10
       success_exit_codes: [0, 1]

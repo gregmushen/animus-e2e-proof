@@ -22,6 +22,7 @@ tools_allowlist:
   - git
   - gh
   - animus
+  - sh
 
 agents:
   swe:

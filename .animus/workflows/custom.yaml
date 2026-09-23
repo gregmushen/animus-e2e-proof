@@ -21,6 +21,7 @@ tools_allowlist:
   - git
   - gh
   - animus
+  - sh
 
 # Compatibility declarations for phases referenced by the currently released
 # animus.task pack. The pack's 0.1.1 workflows reference these IDs without
