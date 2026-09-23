@@ -1,32 +1,5 @@
 {
-  "entries": [
-    {
-      "entry_id": "b263bd27-7103-4718-b2f2-01453157e1e0",
-      "subject_id": "task:TASK-003",
-      "task_id": "task:TASK-003",
-      "dispatch": {
-        "subject": {
-          "Task": {
-            "id": "task:TASK-003"
-          }
-        },
-        "workflow_ref": "proof-workflow",
-        "trigger_source": "manual-queue-enqueue",
-        "requested_at": "2026-09-23T21:46:29.138206Z"
-      },
-      "status": "assigned",
-      "workflow_id": "a519084c-05ee-41c6-bc35-a73ee602b3aa",
-      "enqueued_at": "2026-09-23T21:46:29.567497+00:00",
-      "assigned_at": "2026-09-23T21:46:32.359563+00:00",
-      "held_at": null,
-      "idempotency_key": "claim-05-task-003-retry",
-      "subject_generation": 1,
-      "workflow_generation": 1,
-      "lease_owner_id": "animus-daemon-1675-43ae38efba7f4730b94155d4e20f1bcc",
-      "lease_generation": 1,
-      "lease_expires_at": "2026-09-23T21:51:40.266047+00:00"
-    }
-  ],
+  "entries": [],
   "subject_generations": {
     "animus.task:task:TASK-003": 1,
     "task:TASK-003": 1
@@ -44,6 +17,25 @@
     }
   },
   "completions": {
+    "b263bd27-7103-4718-b2f2-01453157e1e0": {
+      "execution": {
+        "schema": "animus.execution-fence.v1",
+        "version": 1,
+        "workflow_id": "a519084c-05ee-41c6-bc35-a73ee602b3aa",
+        "workflow_generation": 1,
+        "subject": {
+          "qualified_id": "task:TASK-003",
+          "generation": 1
+        },
+        "queue_lease": {
+          "entry_id": "b263bd27-7103-4718-b2f2-01453157e1e0",
+          "owner_id": "animus-daemon-1675-43ae38efba7f4730b94155d4e20f1bcc",
+          "generation": 1,
+          "expires_at": "2026-09-23T21:51:54.806309Z"
+        }
+      },
+      "status": "completed"
+    },
     "e2661f7f-c2f0-4409-84b0-12603e807dcd": {
       "execution": {
         "schema": "animus.execution-fence.v1",

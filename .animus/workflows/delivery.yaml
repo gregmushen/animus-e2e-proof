@@ -13,6 +13,16 @@
 # instead of failing the whole workflow.
 
 phases:
+  prepare-branch:
+    mode: command
+    directive: Create an isolated delivery branch for this workflow run.
+    command:
+      program: git
+      args: ["switch", "-c", "animus/{workflow_id}"]
+      cwd_mode: project_root
+      timeout_secs: 10
+      success_exit_codes: [0]
+
   subject-activate:
     mode: command
     directive: Mark the dispatch subject as in-progress before any work starts.
@@ -79,7 +89,7 @@ phases:
     directive: Open a pull request for the pushed branch.
     command:
       program: gh
-      args: ["pr", "create", "--fill"]
+      args: ["pr", "create", "--fill", "--draft"]
       cwd_mode: project_root
       timeout_secs: 60
       success_exit_codes: [0]
@@ -97,6 +107,7 @@ workflows:
       Standard delivery loop — implement, review, push, open PR.
       The reviewer phase gates merge; rework verdicts route back to implementation.
     phases:
+      - prepare-branch
       - subject-activate
       - implementation
       - review
